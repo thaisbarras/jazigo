@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+<body>
+    {% block 'topo' %}       
+    <!--<a href="/novojazigo" class="btn btn-warning btn-lg" role="button"><i class="material-icons">&#xE147;</i> <span>Novo Jazigo</span></a>-->
+    <a href="/admin" class="btn btn-primary btn-lg" role="button"><i class="material-icons">&#xE147;</i> <span>Área do Adminstrador</span></a>
+    <a href="/" class="btn btn-primary btn-lg" role="button"><i class="material-icons custom">list</i> <span>Listar Jazigos</span></a>
+    
+    
+    {% endblock %}
+
+    {% block 'header' %}
+            <h4 class="fw-bolder">Detalhes de Jazigo</h4>
+            <h5>Acompanhe os detalhes do Jazigo e seus sepultados.</h5>
+    {% endblock %}  
+    <br>
+    {% block 'dashboard' %}
+        <div id="box">
+            
+            <ul class="list-group">
+                <li class="list-group-item active"><h2>Jazigo <strong>{{ jazigo.identificacao_jazigo}}</strong></h2></li>
+                <li class="list-group-item"><strong>Concessionário: </strong>{{ jazigo.nome_concessionaro }}</li>
+                <li class="list-group-item"><strong>Tipo de Jazigo: </strong>{{ jazigo.jazigo_privado_publico }}</li>
+                
+                <li class="list-group-item"><strong>Observações: </strong>{{ jazigo.observacao }}</li>
+                <li class="list-group-item"><strong>Capacidade de Urnas: </strong>{{ jazigo.capacidade_urnas }} - <strong>Urnas Ocupadas: </strong>XXX</li>
+                
+            </ul>
+            
+        </div>    
+        <div class="row">
+        
+            {% for sepultado in sepultados %}
+            
+                <div class="col-md">
+                    <ul class="list-group">    
+                        <li class="list-group-item list-group-item-info"><h4>Sepultado: {{ sepultado.nome_sepultado }}</h4></li>
+                        <li class="list-group-item"><h5>Data de Falecimento: {{ sepultado.data_falecimento }}</h5></li>
+                        {% if jazigo.sepultado_local == True  %}
+                            <li class="list-group-item"><strong>Sepultamento Externo: </strong>{{ sepultado.sepultamento_externo }}</li>
+                            <li class="list-group-item"><strong>Sepultamento Local: </strong>SIM</li>
+                        {% else %}
+                            <li class="list-group-item"><strong>Sepultamento Local: NÃO</strong></li>
+                        {% endif %}
+
+                        
+                        {% if sepultado.transferencia_ossada is None  %}
+                            <li class="list-group-item"><strong>Transferência de Ossada: </strong> Não Houve </li>
+                        {% else %}
+                            <li class="list-group-item"><strong>Transferência de Ossada: </strong>{{ sepultado.transferencia_ossada }} </li>
+                        {% endif %}
+
+                        <!-- DOCUMENTOS -->
+
+                        {% if sepultado.certidao_obito.url != Null  %}
+                            <li class="list-group-item"><a href="{{ sepultado.certidao_obito.url }}">Certidão de Óbito</a></li>
+                        {% endif %}
+                        {% if sepultado.guia_sepultamento.url != Null  %}    
+                            <li class="list-group-item"><a href="{{ sepultado.guia_sepultamento.url }}">Guia do Sepultamento</a></li>
+                        {% endif %}
+                        {% if sepultado.termo_concessao_jazigo_perpetuo.url != Null  %}        
+                            <li class="list-group-item"><a href="{{ sepultado.termo_concessao_jazigo_perpetuo.url }}">Termo de Concessão</a></li>
+                        {% endif %}
+                        {% if sepultado.recibo_pagamento.url != Null  %}    
+                            <li class="list-group-item"><a href="{{ sepultado.recibo_pagamento.url }}">Recibo de Pagamento</a></li>
+                        {% endif %}
+                        {% if sepultado.transferencia_restos_mortais.url != Null  %}    
+                            <li class="list-group-item"><a href="{{ sepultado.transferencia_restos_mortais.url }}">Transfarência de ossada</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+        <!--<p>Foi Sepultado neste Cemitério? {{jazigo.sepultado_local}}</p>
+        <p class="title">Documentos do Sepultado: XXXXXXXXXXXX</p>
+        <p>Foi Sepultado neste Cemitério? XXXXXXXXXXXXX</p>-->
+        <br>    
+        <a href="{% url 'home' %}" class="btn btn-primary  btn-lg">Voltar</a>    
+    
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+{% block 'topo' %}
+    <a href="/novojazigo" class="btn btn-warning btn-lg disabled" tabindex="-1" role="button" aria-disabled="true"><i class="material-icons">&#xE147;</i> <span>Novo Jazigo</span></a>
+    <a href="/admin" class="btn btn-warning btn-lg" role="button"><i class="material-icons">&#xE147;</i> <span>Área do Adminstrador</span></a>
+    <a href="/" class="btn btn-warning btn-lg" role="button"><i class="material-icons custom">list</i> <span>Listar Jazigos</span></a>
+    
+    <!--<a href="/admin" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Cadastrar Novo Jazigo</span></a>
+    <a href="/admin" class="btn btn-primary" data-toggle="modal"><i class="material-icons custom">list</i> <span>Listar Jazigos</span></a>
+    <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Deletar Jazigo(s) Selecionados</span></a>						-->  
+{% endblock %}
+
+{% block 'header' %}
+    <h4 class="fw-bolder">Cadastrar novo jazigo</h4>
+    <h5>Nesta Tela você pode cadastrar o Jazigo suas Sepulturas, os Sepultados e o Concessionário.</h5>
+    <a class="btn btn-info" href="/admin">Faça Login</a>
+{% endblock %}  
+
+{% block 'dashboard' %}
+    <div class="center">
+        <h2>Cadastrar Novo Jazigo</h2>
+        <form method="POST" novalidate class="form-control">
+            {%csrf_token %}
+            
+            
+            {% for field in form %}
+                {% if field.name == 'completed' %}
+                    <p>
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </p>
+                    {% if field.errors %}
+                        <small class="error">{{ field.errors|striptags  }}</small> 
+                    {% endif %}
+                {% else %}
+                <p>
+                    {{ field.label_tag }} 
+                    {{ field }}
+                </p>
+                    {% if field.errors %}
+                        <small class="error">{{ field.errors|striptags  }}</small> 
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            
+            <div class="form-buttons">
+                <input type="submit" value="Save" class="btn btn-primary"/>
+                <a href="{% url 'novo_jazigo' %}" class="btn btn-outline">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block 'head' %}
+{% endblock %}
+
+
+
+<body>
+   
+        {% block 'topo' %}
+            <a href="/admin" class="btn btn-primary btn-lg" role="button"><i class="material-icons">&#xE147;</i> <span>Área do Adminstrador</span></a>
+            <a href="/" class="btn btn-primary btn-lg disabled" tabindex="-1" role="button" aria-disabled="true"><i class="material-icons custom">list</i> <span>Listar Jazigos</span></a>
+            
+            <!--<a href="/novojazigo" class="btn btn-warning btn-lg" role="button"><i class="material-icons">&#xE147;</i> <span>Novo Jazigo</span></a>
+            <a href="/admin" class="btn btn-primary" data-toggle="modal"><i class="material-icons custom">list</i> <span>Listar Jazigos</span></a>
+            <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Deletar Jazigo(s) Selecionados</span></a>						-->  
+        {% endblock %}
+        
+        {% block 'header' %}
+            <h4 class="fw-bolder">Jazigos Cadastrados</h4>
+            <h5>Para detalhes clique no nome do Jazigo ou em <i class="material-icons" data-toggle="tooltip" title="Detalhes">&#128270;</i></h5>
+        {% endblock %}  
+
+
+        {% block 'dashboard' %}  
+        <div class="inline">
+            <input type="text" id="myInput" onkeyup="buscarJazigoFunction()" placeholder="Procure pelo Jazigo.." title="Type in a name">
+            <input type="text" id="myInput2" onkeyup="buscarConcessionarioFunction()" placeholder="Procure pelo Concessionário.." title="Type in a name">
+        </div>
+        <table id="myTable" class="table table-striped table-hover">
+            <thead>
+                <tr class="header">
+                    <!--<th>
+                        <span class="custom-checkbox">
+                        <input type="checkbox" id="selectAll">
+                        <label for="selectAll"></label>
+                        </span>
+                    </th>-->
+                    <th>Jazigo</th>
+                    <th>Concessionário</th>
+                    <th>Tipo Jazigo</th>
+                    <th>Sepultados</th>
+                    <th>Detalhes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for jazigo in jazigos %}       
+                <tr>
+                    <!--<td>
+                        <span class="custom-checkbox">
+                        <input type="checkbox" id="checkbox1" name="options[]" value="1">
+                        <label for="checkbox1"></label>
+                        </span>
+                    </td>-->
+                    <td><a href="{% url 'jazigo' jazigo.id %}" class="detalhes" data-toggle="modal">{{ jazigo.identificacao_jazigo }}</a></td>
+                    <td>{{ jazigo.nome_concessionaro }}</td>
+                    <td>{{ jazigo.jazigo_perpetuo_publico }}</td>
+                    <td>
+                    {% for sepultado in jazigo.nome_sepultado.all %}
+                        <p>{{ sepultado.nome_sepultado }}</p>
+                    {% empty %}
+                        No tags!
+                    {% endfor %}
+                    </td>
+                    <td>
+                        <a href="{% url 'jazigo' jazigo.id %}" class="detalhes" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Detalhes">&#128270;</i></a>
+                        <!--<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>-->
+                    
+                    </td>
+                </tr>
+                
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div class="clearfix">
+            <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+            <ul class="pagination">
+                <li class="page-item disabled"><a href="#">Previous</a></li>
+                <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                <li class="page-item"><a href="#" class="page-link">2</a></li>
+                <li class="page-item"><a href="#" class="page-link">3</a></li>
+                <li class="page-item"><a href="#" class="page-link">4</a></li>
+                <li class="page-item"><a href="#" class="page-link">5</a></li>
+                <li class="page-item"><a href="#" class="page-link">Next</a></li>
+            </ul>
+        </div>
+    </div>    
+    {% endblock %}    
+
+
+</body>
+</html>

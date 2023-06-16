@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+{% block 'topo' %}
+    <a href="/novojazigo" class="btn btn-warning btn-lg disabled" tabindex="-1" role="button" aria-disabled="true"><i class="material-icons">&#xE147;</i> <span>Novo Jazigo</span></a>
+    <a href="/admin" class="btn btn-warning btn-lg" role="button"><i class="material-icons">&#xE147;</i> <span>Área do Adminstrador</span></a>
+    <a href="/" class="btn btn-warning btn-lg" role="button"><i class="material-icons custom">list</i> <span>Listar Jazigos</span></a>
+    
+    <!--<a href="/admin" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Cadastrar Novo Jazigo</span></a>
+    <a href="/admin" class="btn btn-primary" data-toggle="modal"><i class="material-icons custom">list</i> <span>Listar Jazigos</span></a>
+    <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Deletar Jazigo(s) Selecionados</span></a>						-->  
+{% endblock %}
+
+{% block 'header' %}
+    <h4 class="fw-bolder">Cadastrar novo jazigo</h4>
+    <h5>Nesta Tela você pode cadastrar o Jazigo suas Sepulturas, os Sepultados e o Concessionário.</h5>
+    <a class="btn btn-info" href="/admin">Faça Login</a>
+{% endblock %}  
+
+{% block 'dashboard' %}
+
+    <div class="py-5">
+        <div class="row">
+            <h1>OLD OLD OLD</h1>
+            <div class="col-12">
+                <form method="post">
+                    <form action="{% url 'novo_jazigo' %}" method="POST">{% csrf_token %}
+                        <div class="col-md">
+                            <p>Identificação do Jazigo:</p>
+                            <div class="plus">
+                                <select class="form-control" name="identificacao_jazigo">
+                                    {% for qs in quadrasepulturas %}
+                                        <option value="{{ qs.quadra }}{{ qs.sepultura }}{{ qs.complemento }}">{{ qs.quadra }}{{ qs.sepultura }}{{ qs.complemento }}</option>
+                                    {% endfor %}    
+                                </select>  
+                                <a href="#"><i class="material-icons">&#xE147;</i></a>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <p>Capacidade das Urnas:</p>
+                            <input type="text" class="form-control" placeholder="Ex.: 4" name="capacidade_urnas">
+                        </div>
+                        <div class="col-md">
+                            <p>Nome Concessionário:</p>
+                            <div class="plus">
+                                <select class="form-control" name="nome_concessionaro">
+                                    {% for conc in concessionarios %}
+                                        <option value="{{ conc.nome_concessionaro }}">{{ conc.cpf_concessionario }} - {{ conc.nome_concessionaro }}</option>
+                                    {% endfor %}    
+                                </select>    
+                                <a href="#"><i class="material-icons">&#xE147;</i></a>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <p>Privado/Público:</p>
+                            <select class="form-control" name="jazigo_privado_publico">
+                                    <option value="publico" aria-checked="true">Público</option>
+                                    <option value="privado">Privado</option>
+                            </select> 
+                        </div>
+                        <div class="col-md">
+                            <p>Houve transferência de ossada:</p>
+                            <div class="plus">
+                                
+                                <select class="form-control" name="transferencia_ossada">
+                                    <option value="">Não Houve</option>
+                                    {% for ossada in ossadas %}
+                                        <option value="{{ ossada.nome_falecido }}">{{ossada.id}} - {{ ossada.cemiterio_origem }} - {{ ossada.jazigo_cemiterio_destino }}</option>
+                                    {% endfor %}    
+                                </select>
+                                <a href="#"><i class="material-icons">&#xE147;</i></a>
+                            </div>
+                        </div>
+                        <!--<div class="col-md">
+                            <p>Sepultado Local:</p>
+                            <input type="text" class="form-control" placeholder="Ex.: A11" name="sepultado_local">
+                            <label for="sepultado_local">Marque a opção abaixo se sepultado Local </label>
+                            <input name="sepultado_local"> class="flag" type="checkbox" name="flag">
+                        </div>
+                        <div class="col-md">
+                            <p>Sepultamento Externo:</p>
+                            <input type="text" class="form-control" placeholder="Ex.: A11" name="sepultamento_externo">
+                        </div>-->
+                        <div class="col-md">
+                            <p>Sepultados: </p>
+                            <div class="plus">
+                                <select class="form-control" name="nome_sepultado" multiple>
+                                    {% for sepultado in sepultados %}
+                                        <option value="{{ sepultado.nome_sepultado }}">{{ sepultado.nome_sepultado }}</option>
+                                    {% endfor %}    
+                                </select>   
+                                <a href="#"><i class="material-icons">&#xE147;</i></a>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <p>Observação:</p>
+                            <textarea class="form-control" placeholder="Digite aqui alguma observação" name="observacao"  rows="4" cols="100"></textarea>
+                        </div>
+                        <input type="submit" value="Cadastrar" class="btn-principal">
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
